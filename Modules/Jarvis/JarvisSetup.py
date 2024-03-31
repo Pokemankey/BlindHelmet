@@ -6,6 +6,7 @@ from Modules.VoiceBox.VoiceBoxSetup import getVoiceBox
 from Modules.Config.config import SpeechRecognitionModelPath,MicrophoneIndex
 from Modules.Detection.OCR.OCR_Setup import OCR_Setup
 from Modules.Detection.ObjectDetection.ObjectDetection import ObjectDetection
+from Modules.Camera.CameraSetup import getCamera
 
 from Modules.GarbageCollector.GarbageCollector import clean_pycache
 from Modules.Config.Commands import ValidCommand,MatchCommand
@@ -18,6 +19,9 @@ def Jarvis():
     device_index = MicrophoneIndex 
     stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000,
                     input_device_index=device_index)
+
+    #Jarvis Camer Setup
+    cap = getCamera()
 
     #Voice Module Setup
     engine = getVoiceBox()
@@ -32,10 +36,8 @@ def Jarvis():
             if ValidCommand(resultMap["text"]):
                 print("Recognized:", result)
                 if MatchCommand(resultMap["text"]) == "OCR":
-                    print("ODC")
-                    # OCR_Setup()
+                    OCR_Setup(cap)
                 elif MatchCommand(resultMap["text"]) == "ObjectDetection":
-                    print("Object Detections")
-                    # ObjectDetection()
+                    ObjectDetection(cap)
 
     clean_pycache()

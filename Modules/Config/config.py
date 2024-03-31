@@ -1,7 +1,7 @@
 # Path
-SpeechRecognitionModelPath = r"C:\Users\moham\Desktop\MAJOR PROJECT\ClapTrap\Modules\Utility\Speech Recognition Model"
+SpeechRecognitionModelPath = r"Modules\Utility\Speech Recognition Model"
 TesseractPath = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-CocoModelPath = r"C:\Users\moham\Desktop\MAJOR PROJECT\ClapTrap\Modules\Utility\detection.pt"
+CocoModelPath = r"detection.pt"
 
 
 # AI Settings
@@ -10,10 +10,10 @@ MatchPercentage = 70
 DetectionConfidence = 0.7
 
 # Camera Settings
-CameraIndex = 1
+CameraIndex = 0
 
 # Microphone Settings
-MicrophoneIndex = 0
+MicrophoneIndex = 1
 
 
 

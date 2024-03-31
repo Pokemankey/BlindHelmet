@@ -15,7 +15,7 @@ def clean_pycache():
                         else:
                             shutil.rmtree(item_path)
                     os.rmdir(pycache_path)
-                    print(f"Deleted {pycache_path}")
+                    # print(f"Deleted {pycache_path}")
                 except OSError as e:
                     print(f"Failed to delete {pycache_path}: {e}")
 
