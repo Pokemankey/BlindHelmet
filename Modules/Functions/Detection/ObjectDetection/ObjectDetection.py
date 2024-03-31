@@ -1,7 +1,7 @@
 from ultralytics import YOLO
 #Module Imports
-from Modules.VoiceBox.VoiceBoxSetup import getVoiceBox
-from Modules.Config.config import CocoModelPath,DetectionConfidence
+from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.Config.config import CocoModelPath,DetectionConfidence
 
 def ObjectDetection(cap):
     model = YOLO(CocoModelPath)

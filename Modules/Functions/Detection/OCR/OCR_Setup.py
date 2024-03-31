@@ -1,8 +1,8 @@
 import cv2
 import pytesseract
 #Module Imports
-from Modules.VoiceBox.VoiceBoxSetup import getVoiceBox
-from Modules.Config.config import TesseractPath
+from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.Config.config import TesseractPath
 
 def OCR_Setup(cap):
     pytesseract.pytesseract.tesseract_cmd = TesseractPath

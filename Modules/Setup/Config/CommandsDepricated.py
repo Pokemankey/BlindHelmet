@@ -1,20 +1,24 @@
-from Modules.Config.config import AiName,MatchPercentage
+from Modules.Setup.Config.config import AiName,MatchPercentage
 
 
-ReadDocumentCommands = [f"{AiName} read document",f"{AiName} scan document",f"{AiName} read",f"{AiName} read text",f"{AiName} scan text"]
+OCRCommands = [f"{AiName} read document",f"{AiName} scan document",f"{AiName} read",f"{AiName} read text",f"{AiName} scan text"]
 DetectObjectsCommands = [f"{AiName} find objects",f"{AiName} detect objects",f"{AiName} scan objects",f"{AiName} scan for objects"]
-DetectHumanCommands = [f"{AiName} find humans",f"{AiName} detect humans",f"{AiName} scan humans",f"{AiName} scan for humans"]
+DetectHumanCommands = [f"{AiName} find humans",f"{AiName} detect humans",f"{AiName} scan humans",f"{AiName} scan for humans"f"{AiName} find persons",f"{AiName} detect persons",f"{AiName} scan persons",f"{AiName} scan for persons"]
+
+WeatherCommands = [f"{AiName}, what's the weather like today",f"{AiName}, what is today's weather",f"{AiName}, what's the weather forecast for today",f"{AiName}, can you tell me the weather today",f"{AiName}, tell me today's weather, please",f"{AiName}, what's the forecast today",f"{AiName}, what's the weather today",f"{AiName}, what's the weather report for today",f"{AiName}, what's today's forecast",f"{AiName}, give me the weather for today",f"{AiName}, weather today",f"{AiName}, today's weather"]
 
 # To match the user command against every command
 def MatchCommand(command):
     UserCommand = command.split(' ')
 
-    if(MatchUserToSystem(UserCommand,ReadDocumentCommands)):
+    if(MatchUserToSystem(UserCommand,OCRCommands)):
         return "OCR"
     elif(MatchUserToSystem(UserCommand,DetectObjectsCommands)):
         return "ObjectDetection"
     elif(MatchUserToSystem(UserCommand,DetectHumanCommands)):
         return "HumanDetection"
+    elif(MatchUserToSystem(UserCommand,WeatherCommands)):
+        return "Weather"
 
 
 # To match the user command to system command
@@ -23,6 +27,7 @@ def MatchUserToSystem(UserCommand,SystemCommands):
         SystemCommand = SystemCommands[i].split(' ')
         wordsCorrect = MatchSentence(UserCommand,SystemCommand)
         percentage = int((wordsCorrect / len(SystemCommand)) * 100)
+        print(percentage,SystemCommand)
         if percentage >= MatchPercentage:
             return True 
     return False
