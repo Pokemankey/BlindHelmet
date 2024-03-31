@@ -1,0 +1,6 @@
+pyttsx3
+vosk
+pyaudio
+ultralytics
+opencv-python
+pytesseract
