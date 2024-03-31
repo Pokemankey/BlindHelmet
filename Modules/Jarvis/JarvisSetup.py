@@ -2,10 +2,12 @@ from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
 #Module Imports
+from Modules.Config.config import AiName
 from Modules.VoiceBox.VoiceBoxSetup import getVoiceBox
 from Modules.Config.config import SpeechRecognitionModelPath,MicrophoneIndex
 from Modules.Detection.OCR.OCR_Setup import OCR_Setup
 from Modules.Detection.ObjectDetection.ObjectDetection import ObjectDetection
+from Modules.Detection.HumanDetection.HumanDetection import HumanDetection
 from Modules.Camera.CameraSetup import getCamera
 
 from Modules.GarbageCollector.GarbageCollector import clean_pycache
@@ -25,7 +27,7 @@ def Jarvis():
 
     #Voice Module Setup
     engine = getVoiceBox()
-    engine.say("jarvis online")
+    engine.say(f"{AiName} online")
     engine.runAndWait()
 
     while True:
@@ -35,9 +37,12 @@ def Jarvis():
             resultMap = json.loads(result.lower())
             if ValidCommand(resultMap["text"]):
                 print("Recognized:", result)
-                if MatchCommand(resultMap["text"]) == "OCR":
+                output = MatchCommand(resultMap["text"])
+                if output == "OCR":
                     OCR_Setup(cap)
-                elif MatchCommand(resultMap["text"]) == "ObjectDetection":
+                elif output == "ObjectDetection":
                     ObjectDetection(cap)
+                elif MatchCommand(resultMap["text"]) == "HumanDetection":
+                    HumanDetection(cap)
 
     clean_pycache()

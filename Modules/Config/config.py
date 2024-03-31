@@ -5,7 +5,7 @@ CocoModelPath = r"detection.pt"
 
 
 # AI Settings
-AiName = "jarvis"
+AiName = "Zero"
 MatchPercentage = 70
 DetectionConfidence = 0.7
 

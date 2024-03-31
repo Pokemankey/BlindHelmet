@@ -3,6 +3,7 @@ from Modules.Config.config import AiName,MatchPercentage
 
 ReadDocumentCommands = [f"{AiName} read document",f"{AiName} scan document",f"{AiName} read",f"{AiName} read text",f"{AiName} scan text"]
 DetectObjectsCommands = [f"{AiName} find objects",f"{AiName} detect objects",f"{AiName} scan objects",f"{AiName} scan for objects"]
+DetectHumanCommands = [f"{AiName} find humans",f"{AiName} detect humans",f"{AiName} scan humans",f"{AiName} scan for humans"]
 
 # To match the user command against every command
 def MatchCommand(command):
@@ -12,6 +13,8 @@ def MatchCommand(command):
         return "OCR"
     elif(MatchUserToSystem(UserCommand,DetectObjectsCommands)):
         return "ObjectDetection"
+    elif(MatchUserToSystem(UserCommand,DetectHumanCommands)):
+        return "HumanDetection"
 
 
 # To match the user command to system command
