@@ -12,41 +12,66 @@ from joblib import dump
 
 AiName = "Zero"
 
-OCRCommands = [f"{AiName} read document",
-               f"{AiName} scan document",
-               f"{AiName} read",
-               f"{AiName} read text",
-               f"{AiName} scan text",
-               f"{AiName} can you read this"]
+OCRCommands = [f"read document",
+               f"scan document",
+               f"read",
+               f"read text",
+               f"scan text",
+               f"can you read this"]
 
-DetectObjectsCommands = [f"{AiName} find objects",
-                         f"{AiName} detect objects",
-                         f"{AiName} scan objects",
-                         f"{AiName} scan for objects",
-                         f"{AiName} what do you see",
-                         f"{AiName} what is in front of me",]
+DetectObjectsCommands = [f"find objects",
+                         f"detect objects",
+                         f"scan objects",
+                         f"scan for objects",
+                         f"what do you see",
+                         f"what is in front of me",]
 
-DetectHumanCommands = [f"{AiName} find humans",
-                       f"{AiName} detect humans",
-                       f"{AiName} scan humans",
-                       f"{AiName} scan for humans",
-                       f"{AiName} find persons",
-                       f"{AiName} detect persons",
-                       f"{AiName} scan persons",
-                       f"{AiName} scan for persons"]
+DetectHumanCommands = [f"find humans",
+                       f"detect humans",
+                       f"scan humans",
+                       f"scan for humans",
+                       f"find persons",
+                       f"detect persons",
+                       f"scan persons",
+                       f"scan for persons"]
 
-WeatherCommands = [f"{AiName}, what's the weather like today",
-                   f"{AiName}, what is today's weather",
-                   f"{AiName}, what's the weather forecast for today",
-                   f"{AiName}, can you tell me the weather today",
-                   f"{AiName}, tell me today's weather, please",
-                   f"{AiName}, what's the forecast today",
-                   f"{AiName}, what's the weather today",
-                   f"{AiName}, what's the weather report for today",
-                   f"{AiName}, what's today's forecast",
-                   f"{AiName}, give me the weather for today",
-                   f"{AiName}, weather today",
-                   f"{AiName}, today's weather"]
+WeatherCommands = [f" what's the weather like today",
+                   f" what is today's weather",
+                   f" what's the weather forecast for today",
+                   f" can you tell me the weather today",
+                   f" tell me today's weather, please",
+                   f" what's the forecast today",
+                   f" what's the weather today",
+                   f" what's the weather report for today",
+                   f" what's today's forecast",
+                   f" give me the weather for today",
+                   f" weather today",
+                   f" today's weather"]
+
+youtubeCommands = [f"video player",
+                   f"music player",
+                   f"start video player",
+                   f"start music player",
+                   f"open video player",
+                   f"open music player"]
+
+resumeCommands = [f"Play",
+                   f"resume",
+                   f"play music",
+                   f"resume music",
+                   f"play video",
+                   f"resume video"]
+
+pauseCommands = [f"pause",
+                   f"pause music",
+                   f"pause video"]
+
+exitCommands = [f"exit",
+                   f"exit music",
+                   f"exit video",
+                   f"stop",
+                   f"stop music",
+                   f"stop video"]
 
 dataset = [
     ("Read Documents", "OCR"),
@@ -59,6 +84,10 @@ dataset += [(command, "OCR") for command in OCRCommands]
 dataset += [(command, "ObjectDetection") for command in DetectObjectsCommands]
 dataset += [(command, "HumanDetection") for command in DetectHumanCommands]
 dataset += [(command, "WeatherLookup") for command in WeatherCommands]
+dataset += [(command, "Youtube") for command in youtubeCommands]
+dataset += [(command, "resume") for command in resumeCommands]
+dataset += [(command, "pause") for command in pauseCommands]
+dataset += [(command, "exit") for command in exitCommands]
 
 
 # Tokenize text and remove stopwords

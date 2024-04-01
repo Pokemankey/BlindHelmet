@@ -2,8 +2,8 @@
 SpeechRecognitionModelPath = r"Modules\Setup\Utility\Speech Recognition Model"
 TesseractPath = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 CocoModelPath = r"detection.pt"
-NLPpath = r'C:\Users\moham\Desktop\MAJOR PROJECT\Blind Helmet\BlindHelmet-main\Modules\Setup\Utility\TrainInput\Zero-NLP.joblib'
-tfidfPath = r'C:\Users\moham\Desktop\MAJOR PROJECT\Blind Helmet\BlindHelmet-main\Modules\Setup\Utility\TrainInput\Zero-tfidf_vectorizer.joblib'
+NLPpath = r'Modules\Setup\Utility\TrainInput\Zero-NLP.joblib'
+tfidfPath = r'Modules\Setup\Utility\TrainInput\Zero-tfidf_vectorizer.joblib'
 
 # AI Settings
 AiName = "Zero"
