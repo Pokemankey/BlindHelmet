@@ -4,3 +4,6 @@ pyaudio
 ultralytics
 opencv-python
 pytesseract
+google-api-python-client
+pydub
+youtube_dl
