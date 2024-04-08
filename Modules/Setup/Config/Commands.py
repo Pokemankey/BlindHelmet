@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from joblib import load
 
 #Module Imports
-from Modules.Setup.Config.config import AiName,NLPpath,tfidfPath,MatchPercentage
+from Modules.Setup.Config.config import AiName,NLPpath,tfidfPath
 
 
 def getNLPModel():
@@ -36,12 +36,20 @@ def evaluateInput(userCommand,nlpModel,tfidf_vectorizer):
 def ValidCommand(command):
     UserCommand = command.split(' ')
     for i in range(len(UserCommand)):
-        if CompareCharacters(UserCommand[i],AiName):
+        if CompareCharacters(UserCommand[i],AiName,100):
+            return True
+    return False
+
+#To check if command has a jarvis in it
+def ValidGeminiCommand(command):
+    UserCommand = command.split(' ')
+    for i in range(len(UserCommand)):
+        if CompareCharacters(UserCommand[i],"gemini",60):
             return True
     return False
 
 # compare characters of 2 words , if some % is accurate , return true
-def CompareCharacters(userWord,systemWord):
+def CompareCharacters(userWord,systemWord,matchPercentage):
     similarCharacters = 0
     userWordMap = {}
     systemWordMap = {}
@@ -63,6 +71,6 @@ def CompareCharacters(userWord,systemWord):
                 similarCharacters += userWordMap[i]
 
     percentage = int((similarCharacters / len(systemWord)) * 100)
-    if percentage >= MatchPercentage:
+    if percentage >= matchPercentage:
         return True 
     return False

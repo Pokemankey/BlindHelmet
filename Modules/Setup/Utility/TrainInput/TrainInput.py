@@ -293,6 +293,79 @@ helpCommands = [
     "commands available"
 ]
 
+geminiCommands = [
+    "Gemini, I have a question.",
+    "Gemini, assist me please with a question.",
+    "Gemini, I need insight on a question.",
+    "Gemini, your guidance for this question?",
+    "Gemini, help me out with this question.",
+    "Gemini, enlighten me on this question.",
+    "Gemini, your expertise on this question?",
+    "Gemini, an inquiry to address.",
+    "Gemini, need your input on this question.",
+    "Gemini, a quick query for you.",
+    "Gemini, shed some light on this question.",
+    "Gemini, I'm curious, can you help with this question?",
+    "Gemini, provide an answer to this question.",
+    "Gemini, assistance required for this question.",
+    "Gemini, offer perspective on this question.",
+    "Gemini, seeking advice for this question.",
+    "Gemini, share info on this question.",
+    "Gemini, your knowledge on this question?",
+    "Gemini, attention please, question here.",
+    "Gemini, need assistance with this question.",
+    "Gemini, provide clarity for this question.",
+    "Gemini, your expertise needed for this question?",
+    "Gemini, got a question, can you help?",
+    "Gemini, need your wisdom for this question."
+]
+
+faceRecognitionCommands = [
+    "recognize faces",
+    "recognize faces around",
+    "remember faces",
+    "save faces",
+    "save facial features",
+    "store faces",
+    "store facial features",
+    "capture faces",
+    "record faces",
+    "track faces",
+    "verify faces",
+    "classify faces",
+    "scan faces",
+    "find faces",
+    "retrieve faces",
+    "recognize facial patterns"
+]
+
+facialDetectionCommands = [
+    "run facial recognition",
+    "initiate facial recognition",
+    "start facial recognition",
+    "begin facial recognition",
+    "activate facial recognition",
+    "execute facial recognition",
+    "conduct facial recognition",
+    "perform facial recognition",
+    "carry out facial recognition",
+    "launch facial recognition",
+    "commence facial recognition",
+    "trigger facial recognition",
+    "undertake facial recognition",
+    "kick off facial recognition",
+    "engage facial recognition",
+    "implement facial recognition",
+    "deploy facial recognition",
+    "invoke facial recognition",
+    "proceed with facial recognition",
+    "run facial analysis",
+    "run facial matching",
+    "run facial detection",
+    "run facial tracking"
+]
+
+
 dataset = []
 
 dataset += [(command, "OCR") for command in ocrCommands]
@@ -305,6 +378,12 @@ dataset += [(command, "Pause") for command in pauseCommands]
 dataset += [(command, "Exit") for command in exitCommands]
 dataset += [(command, "Date") for command in dateCommands]
 dataset += [(command, "Help") for command in helpCommands]
+dataset += [(command, "Gemini") for command in geminiCommands]
+dataset += [(command, "SaveFace") for command in faceRecognitionCommands]
+dataset += [(command, "DetectFace") for command in facialDetectionCommands]
+
+
+
 
 
 
@@ -347,6 +426,6 @@ def predict_action(command):
 # Example usage
 # voice_command = "lets watch some youtube"
 # print(predict_action(voice_command))
-# for i in resumeCommands:
-#     predicted_action = predict_action(i)
-#     print("Predicted action:", predicted_action)
+for i in facialDetectionCommands:
+    predicted_action = predict_action(i)
+    print("Predicted action:", predicted_action)

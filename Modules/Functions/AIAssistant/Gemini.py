@@ -2,26 +2,21 @@ import json
 import google.generativeai as genai
 from API_KEYS import GOOGLE_API_KEY
 
-from Modules.Setup.Config.config import AiName
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
-from Modules.Setup.Config.Commands import ValidCommand,evaluateInput
 
-def get_ai_assistant(recognizer, stream, nlpModel, tfidf_vectorizer):
+def askGeminiQuestion(recognizer, stream):
 
-    genai.configure(api_key=GOOGLE_API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
-    
-    while True:
+    try:
+        genai.configure(api_key=GOOGLE_API_KEY)
+        model = genai.GenerativeModel('gemini-pro')
         engine = getVoiceBox()
-
-        booli = True
-        booli2 = True
+        confirm = True
         userInput = ""
         while True:
-            if booli2: 
+            if confirm: 
                 engine.say("What do you want to ask me?")
                 engine.runAndWait()
-                booli2 = False
+                confirm = False
             data = stream.read(2000)
             if recognizer.AcceptWaveform(data):
                 result = recognizer.Result()
@@ -29,24 +24,25 @@ def get_ai_assistant(recognizer, stream, nlpModel, tfidf_vectorizer):
                 print(resultMap['text'])
                 engine.say("is this what you asked me " + resultMap['text'])
                 engine.runAndWait()
-                while booli:
+                while True:
                     data2 = stream.read(2000)
                     if recognizer.AcceptWaveform(data2):
                         result1 = recognizer.Result()
                         resultMap1 = json.loads(result1.lower())
                         if "yes"  in resultMap1['text']:
                             userInput = resultMap['text']
-                            booli = False
                             break
                         elif "no"  in resultMap1['text']:
-                            booli2 = True
+                            confirm = True
                             break
-                if not booli:
+                if not confirm:
                     break
                         
-
-
-
-        response = model.generate_content(userInput + " in a max of two sentences")
+        response = model.generate_content(userInput + " in a max of 5 sentences")
         engine.say(response.text)
+        engine.runAndWait()
+        engine.say("Exiting to main menu")
+        engine.runAndWait()
+    except Exception as e:
+        engine.say("Error Occured , No wifi available or api key missing")
         engine.runAndWait()

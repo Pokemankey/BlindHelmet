@@ -4,24 +4,24 @@ TesseractPath = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 CocoModelPath = r"detection.pt"
 NLPpath = r'Modules\Setup\Utility\TrainInput\Zero-NLP.joblib'
 tfidfPath = r'Modules\Setup\Utility\TrainInput\Zero-tfidf_vectorizer.joblib'
+faceRecognitionPath = r'Modules\Setup\Utility\haarcascade_frontalface_default.xml'
+faceDatabasePath = r'Modules\Functions\Detection\FaceDetection\FaceDatabase'
 
 # AI Settings
 AiName = "zero"
-MatchPercentage = 100
 DetectionConfidence = 0.7
 
 # Camera Settings
 CameraIndex = 0
 
 # Microphone Settings
-MicrophoneIndex = 3
+MicrophoneIndex = 1
 
 # User Location
 UserLocation = "Dubai,UAE"
 
 # All Commands
-allCommands = "meow"
-# allCommands = "OCR / Text Detection , Human Detection , Object Detection , Get weather information , Play youtube video / music and resume pause and stop the videos and lastly Get current date and time"
+allCommands = "Ask Gemini A Question , OCR / Text Detection , Human Detection , Object Detection , Get weather information , Play youtube video / music and resume pause and stop the videos and lastly Get current date and time"
 
 # Enumerate available audio devices
 # import pyaudio
