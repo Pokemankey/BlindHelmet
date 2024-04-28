@@ -15,13 +15,15 @@ DetectionConfidence = 0.7
 CameraIndex = 0
 
 # Microphone Settings
-MicrophoneIndex = 1
+MicrophoneIndex = 3
 
 # User Location
 UserLocation = "Dubai,UAE"
 
 # All Commands
-allCommands = "Ask Gemini A Question , OCR / Text Detection , Human Detection , Object Detection , Get weather information , Play youtube video / music and resume pause and stop the videos and lastly Get current date and time"
+# allCommands = "Ask Gemini A Question , OCR / Text Detection , Human Detection , Object Detection , Get weather information , Play youtube video / music and resume pause and stop the videos and lastly Get current date and time"
+allCommands = "..."
+
 
 # Enumerate available audio devices
 # import pyaudio

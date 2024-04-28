@@ -20,7 +20,6 @@ from Modules.Functions.Weather.FetchWeather import get_weather_forecast
 from Modules.Functions.DateAndTime.fetchDateAndTime import get_current_datetime
 from Modules.Functions.Help.Help import getHelp
 
-
 def FindCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
     global known_faces
     output = evaluateInput(text,nlpModel,tfidf_vectorizer)
@@ -45,14 +44,11 @@ def FindCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
     elif output == "DetectFace":
         detectFace(cap,known_faces)
 
-
 def FindGeminiCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
     output = evaluateInput(text,nlpModel,tfidf_vectorizer)
-    print(f"Running {output}")
+    # print(f"Running {output}")
     if output == "Gemini":
         askGeminiQuestion(recognizer,stream)
-
-
 
 def Jarvis():
     global known_faces
