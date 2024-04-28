@@ -80,7 +80,7 @@ def Jarvis():
     engine.runAndWait()
 
     while True:
-        data = stream.read(2000)
+        data = stream.read(2000,exception_on_overflow=False)
         if recognizer.AcceptWaveform(data):
             result = recognizer.Result()
             resultMap = json.loads(result.lower())

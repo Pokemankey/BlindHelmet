@@ -109,7 +109,7 @@ def YoutubePlayer(recognizer, stream,db):
         engine.runAndWait()
 
         while True:
-            data = stream.read(2000)
+            data = stream.read(2000,exception_on_overflow=False)
             if recognizer.AcceptWaveform(data):
                 result = recognizer.Result()
                 resultMap = json.loads(result.lower())
@@ -134,7 +134,7 @@ def YoutubePlayer(recognizer, stream,db):
 
             # Loop to listen for user input
             while True:
-                data = stream.read(2000)
+                data = stream.read(2000,exception_on_overflow=False)
                 if recognizer.AcceptWaveform(data):
                     result = recognizer.Result()
                     resultMap = json.loads(result.lower())

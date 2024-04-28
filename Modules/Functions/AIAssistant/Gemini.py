@@ -17,7 +17,7 @@ def askGeminiQuestion(recognizer, stream):
                 engine.say("What do you want to ask me?")
                 engine.runAndWait()
                 confirm = False
-            data = stream.read(2000)
+            data = stream.read(2000,exception_on_overflow=False)
             if recognizer.AcceptWaveform(data):
                 result = recognizer.Result()
                 resultMap = json.loads(result.lower())
@@ -25,7 +25,7 @@ def askGeminiQuestion(recognizer, stream):
                 engine.say("is this what you asked me " + resultMap['text'])
                 engine.runAndWait()
                 while True:
-                    data2 = stream.read(2000)
+                    data2 = stream.read(2000,exception_on_overflow=False)
                     if recognizer.AcceptWaveform(data2):
                         result1 = recognizer.Result()
                         resultMap1 = json.loads(result1.lower())
