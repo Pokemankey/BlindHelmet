@@ -100,7 +100,7 @@ def toggle_stop():
     global stop_requested
     stop_requested = True
 
-def YoutubePlayer(recognizer, stream, nlpModel, tfidf_vectorizer):
+def YoutubePlayer(recognizer, stream,db):
     try:
         # Example search query
         query = ""
@@ -140,7 +140,7 @@ def YoutubePlayer(recognizer, stream, nlpModel, tfidf_vectorizer):
                     resultMap = json.loads(result.lower())
                     print(resultMap['text'])
                     if ValidCommand(resultMap["text"]):
-                        output = evaluateInput(resultMap["text"], nlpModel, tfidf_vectorizer)
+                        output = evaluateInput(resultMap["text"], db)
                         if output == 'Pause':
                             toggle_pause()
                         elif output == 'Resume':

@@ -1,3 +1,4 @@
+https://pytorch.org/
 pyttsx3
 vosk
 pyaudio
@@ -6,4 +7,9 @@ opencv-python
 pytesseract
 google-api-python-client
 pydub
-youtube_dl
+https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz
+langchain
+sentence_transformers
+lanchain_chroma
+google.generativeai
+imgbeddings

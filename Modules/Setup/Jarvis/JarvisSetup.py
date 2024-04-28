@@ -2,13 +2,16 @@ from vosk import Model, KaldiRecognizer
 import pyaudio
 import json
 import google.generativeai as genai
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
+
 #Module Imports
 from Modules.Setup.Config.config import SpeechRecognitionModelPath,MicrophoneIndex
 from Modules.Setup.Config.config import AiName
 from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
 
-from Modules.Setup.Config.Commands import getNLPModel,getTfidfVectorizer,evaluateInput,ValidCommand,ValidGeminiCommand
+from Modules.Setup.Config.Commands import evaluateInput,ValidCommand,ValidGeminiCommand
 
 from Modules.Functions.Detection.OCR.OCR_Setup import OCR_Setup
 from Modules.Functions.Detection.ObjectDetection.ObjectDetection import ObjectDetection
@@ -20,9 +23,9 @@ from Modules.Functions.Weather.FetchWeather import get_weather_forecast
 from Modules.Functions.DateAndTime.fetchDateAndTime import get_current_datetime
 from Modules.Functions.Help.Help import getHelp
 
-def FindCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
+def FindCommand(cap,text,db,recognizer,stream):
     global known_faces
-    output = evaluateInput(text,nlpModel,tfidf_vectorizer)
+    output = evaluateInput(text,db)
     print(f"Running {output}")
     if output == "OCR":
         OCR_Setup(cap)
@@ -31,7 +34,7 @@ def FindCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
     elif output == "HumanDetection":
         HumanDetection(cap)
     elif output == "Youtube":
-        YoutubePlayer(recognizer,stream,nlpModel,tfidf_vectorizer)
+        YoutubePlayer(recognizer,stream,db)
     elif output == "WeatherLookup":
         get_weather_forecast()
     elif output == "Date":
@@ -44,8 +47,8 @@ def FindCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
     elif output == "DetectFace":
         detectFace(cap,known_faces)
 
-def FindGeminiCommand(cap,text,nlpModel,tfidf_vectorizer,recognizer,stream):
-    output = evaluateInput(text,nlpModel,tfidf_vectorizer)
+def FindGeminiCommand(cap,text,db,recognizer,stream):
+    output = evaluateInput(text,db)
     # print(f"Running {output}")
     if output == "Gemini":
         askGeminiQuestion(recognizer,stream)
@@ -61,11 +64,14 @@ def Jarvis():
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=2000,
                     input_device_index=MicrophoneIndex)
-    #NLP setup
-    nlpModel = getNLPModel()
-    tfidf_vectorizer = getTfidfVectorizer()
+    #Embeddings setup
+    embeddings = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
+    db = Chroma(
+        embedding_function=embeddings,
+        persist_directory="emb"
+    )
 
-    # Face database embeddings
+    #Face database embeddings
     known_faces = precompute_embeddings()
 
     #Voice Module Setup
@@ -81,7 +87,7 @@ def Jarvis():
             print(resultMap["text"])
             if ValidCommand(resultMap["text"]):
                 command = resultMap["text"].replace("zero ", "")
-                FindCommand(cap,command,nlpModel,tfidf_vectorizer,recognizer,stream)
+                FindCommand(cap,command,db,recognizer,stream)
             elif ValidGeminiCommand(resultMap["text"]):
                 command = resultMap["text"]
-                FindGeminiCommand(cap,command,nlpModel,tfidf_vectorizer,recognizer,stream)
+                FindGeminiCommand(cap,command,db,recognizer,stream)

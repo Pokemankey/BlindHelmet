@@ -1,36 +1,12 @@
-import nltk
-nltk.download('stopwords')
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
-from joblib import load
-
 #Module Imports
-from Modules.Setup.Config.config import AiName,NLPpath,tfidfPath
+from Modules.Setup.Config.config import AiName
 
-
-def getNLPModel():
-    nlpModel = load(NLPpath)
-    return nlpModel
-
-def getTfidfVectorizer():
-    tfidf_vectorizer = load(tfidfPath)
-    return tfidf_vectorizer
-
-
-def evaluateInput(userCommand,nlpModel,tfidf_vectorizer):
-    stop_words = set(stopwords.words('english'))
-    # Preprocess the input command
-    tokenized_command = word_tokenize(userCommand.lower())
-    filtered_command = [word for word in tokenized_command if word not in stop_words]
-    processed_command = ' '.join(filtered_command)
-    
-    # Convert command into feature vector
-    command_vector = tfidf_vectorizer.transform([processed_command]).toarray()
-    
-    # Predict action using the trained classifier
-    predicted_action = nlpModel.predict(command_vector)
-    return predicted_action[0]
+def evaluateInput(userCommand, db):
+    results = db.similarity_search_with_score(userCommand, k=1)
+    predicted_action = "".join([doc.page_content for doc, _score in results if _score < 1.5])
+    if len(predicted_action) == 0:
+        return "None"
+    return predicted_action.split(" ")[0]
 
 #To check if command has a jarvis in it
 def ValidCommand(command):

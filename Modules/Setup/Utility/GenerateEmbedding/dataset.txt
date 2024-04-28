@@ -1,0 +1,13 @@
+ObjectDetection = find objects, look for things, look for objects, i need to find something, what do i see, scan for objects--n
+OCR = Read text, Read what is written, scan this document, read this for me--n
+HumanDetection = i am looking for someone, how many people are visible, humans--n
+WeatherLookup = what is the weather like , weather , is it cold outside, is it hot outside, is it going to rain--n
+Youtube = open video player, open music player, i want to listen to music, open youtube player--n
+Resume = continue playing, resume playing--n
+Pause = stop music, pause music--n
+Exit = exit video player, quit music player--n
+Date = what is the date today, what day is it today--n
+Help = i need assistance, what are the list of commands--n
+Gemini = ask gemini a question, i have a question--n
+SaveFace = Can you save this persons face, remember this person--n
+FacialRecognition = run facial recognition, start facial recognition--n
