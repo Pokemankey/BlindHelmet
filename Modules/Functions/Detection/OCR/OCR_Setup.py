@@ -2,12 +2,14 @@ import cv2
 import pytesseract
 #Module Imports
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.Config.config import TesseractPath
 
-def OCR_Setup(cap):
+def OCR_Setup():
     pytesseract.pytesseract.tesseract_cmd = TesseractPath
     engine = getVoiceBox()
 
+    cap = getCamera()
     # Check if the camera is opened successfully
     if not cap.isOpened():
         engine.say("Error Failed to open camera.")
@@ -15,6 +17,7 @@ def OCR_Setup(cap):
         return
 
     ret, frame = cap.read()
+    cap.release()
     
     # Check if the frame is valid
     if not ret or frame is None:

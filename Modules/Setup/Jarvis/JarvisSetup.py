@@ -23,16 +23,16 @@ from Modules.Functions.Weather.FetchWeather import get_weather_forecast
 from Modules.Functions.DateAndTime.fetchDateAndTime import get_current_datetime
 from Modules.Functions.Help.Help import getHelp
 
-def FindCommand(cap,text,db,recognizer,stream):
+def FindCommand(text,db,recognizer,stream):
     global known_faces
     output = evaluateInput(text,db)
     print(f"Running {output}")
     if output == "OCR":
-        OCR_Setup(cap)
+        OCR_Setup()
     elif output == "ObjectDetection":
-        ObjectDetection(cap)
+        ObjectDetection()
     elif output == "HumanDetection":
-        HumanDetection(cap)
+        HumanDetection()
     elif output == "Youtube":
         YoutubePlayer(recognizer,stream,db)
     elif output == "WeatherLookup":
@@ -42,12 +42,12 @@ def FindCommand(cap,text,db,recognizer,stream):
     elif output == "Help":
         getHelp()
     elif output == "SaveFace":
-        saveFace(cap,recognizer,stream)
+        saveFace(recognizer,stream)
         known_faces = precompute_embeddings()
     elif output == "DetectFace":
-        detectFace(cap,known_faces)
+        detectFace(known_faces)
 
-def FindGeminiCommand(cap,text,db,recognizer,stream):
+def FindGeminiCommand(text,db,recognizer,stream):
     output = evaluateInput(text,db)
     # print(f"Running {output}")
     if output == "Gemini":
@@ -55,14 +55,12 @@ def FindGeminiCommand(cap,text,db,recognizer,stream):
 
 def Jarvis():
     global known_faces
-    #Camera Setup
-    cap = getCamera()
 
     #microphone setup
     model = Model(SpeechRecognitionModelPath)
     recognizer = KaldiRecognizer(model, 48000)
     p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paInt16, channels=1, rate=48000, input=True, frames_per_buffer=1024,
+    stream = p.open(format=pyaudio.paInt16, channels=1, rate=48000, input=True, frames_per_buffer=2000,
                     input_device_index=MicrophoneIndex)
     #Embeddings setup
     embeddings = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
@@ -87,7 +85,7 @@ def Jarvis():
             print(resultMap["text"])
             if ValidCommand(resultMap["text"]):
                 command = resultMap["text"].replace("zero ", "")
-                FindCommand(cap,command,db,recognizer,stream)
+                FindCommand(command,db,recognizer,stream)
             elif ValidGeminiCommand(resultMap["text"]):
                 command = resultMap["text"]
-                FindGeminiCommand(cap,command,db,recognizer,stream)
+                FindGeminiCommand(command,db,recognizer,stream)

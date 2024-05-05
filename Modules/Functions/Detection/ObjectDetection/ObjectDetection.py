@@ -1,14 +1,17 @@
 from ultralytics import YOLO
 #Module Imports
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.Config.config import CocoModelPath,DetectionConfidence
 
-def ObjectDetection(cap):
+def ObjectDetection():
     model = YOLO(CocoModelPath)
     engine = getVoiceBox()
     names = model.names
 
+    cap = getCamera()
     ret, frame = cap.read()
+    cap.release()
     results = model.predict(frame, save=False, conf=DetectionConfidence)
 
     for r in results:
