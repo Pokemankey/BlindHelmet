@@ -31,20 +31,5 @@ print("Available audio devices:")
 for i in range(p.get_device_count()):
    info = p.get_device_info_by_index(i)
    print(f"{i}: {info['name']}")
-camera_index = 0
-while True:
-    # Try to capture from the camera device
-    cap = cv2.VideoCapture(camera_index)     
-    # Check if the camera is opened successfully
-    if not cap.isOpened():
-        break    
-    # Get the camera's name
-    camera_name = f"Camera {camera_index}"      
-    # Print camera information
-    print(f"{camera_name}: {cap.get(cv2.CAP_PROP_FRAME_WIDTH)}x{cap.get(cv2.CAP_PROP_FRAME_HEIGHT)}")     
-    # Release the capture object
-    cap.release()
-    # Move to the next camera device
-    camera_index += 1
 
    
