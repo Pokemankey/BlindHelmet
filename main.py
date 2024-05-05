@@ -3,4 +3,4 @@ from Modules.Setup.GarbageCollector.GarbageCollector import clean_pycache
 
 
 Jarvis()
-clean_pycache()
+#clean_pycache()

@@ -60,9 +60,9 @@ def Jarvis():
 
     #microphone setup
     model = Model(SpeechRecognitionModelPath)
-    recognizer = KaldiRecognizer(model, 16000)
+    recognizer = KaldiRecognizer(model, 48000)
     p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=2000,
+    stream = p.open(format=pyaudio.paInt16, channels=1, rate=48000, input=True, frames_per_buffer=1024,
                     input_device_index=MicrophoneIndex)
     #Embeddings setup
     embeddings = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
