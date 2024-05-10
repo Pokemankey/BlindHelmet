@@ -4,10 +4,10 @@ import json
 import google.generativeai as genai
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
+from ultralytics import YOLO
 
 #Module Imports
-from Modules.Setup.Config.config import SpeechRecognitionModelPath,MicrophoneIndex
-from Modules.Setup.Config.config import AiName
+from Modules.Setup.Config.config import SpeechRecognitionModelPath,MicrophoneIndex,CocoModelPath,AiName
 from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
 
@@ -23,16 +23,17 @@ from Modules.Functions.Weather.FetchWeather import get_weather_forecast
 from Modules.Functions.DateAndTime.fetchDateAndTime import get_current_datetime
 from Modules.Functions.Help.Help import getHelp
 
-def FindCommand(text,db,recognizer,stream):
+
+def FindCommand(text,db,recognizer,stream,detectionModel):
     global known_faces
     output = evaluateInput(text,db)
     print(f"Running {output}")
     if output == "OCR":
         OCR_Setup()
     elif output == "ObjectDetection":
-        ObjectDetection()
+        ObjectDetection(detectionModel)
     elif output == "HumanDetection":
-        HumanDetection()
+        HumanDetection(detectionModel)
     elif output == "Youtube":
         YoutubePlayer(recognizer,stream,db)
     elif output == "WeatherLookup":
@@ -72,6 +73,9 @@ def Jarvis():
     #Face database embeddings
     known_faces = precompute_embeddings()
 
+    #Load detection Model
+    detectionModel = YOLO(CocoModelPath)
+
     #Voice Module Setup
     engine = getVoiceBox()
     engine.say(f"{AiName} online")
@@ -85,7 +89,7 @@ def Jarvis():
             print(resultMap["text"])
             if ValidCommand(resultMap["text"]):
                 command = resultMap["text"].replace("zero ", "")
-                FindCommand(command,db,recognizer,stream)
+                FindCommand(command,db,recognizer,stream,detectionModel)
             elif ValidGeminiCommand(resultMap["text"]):
                 command = resultMap["text"]
                 FindGeminiCommand(command,db,recognizer,stream)

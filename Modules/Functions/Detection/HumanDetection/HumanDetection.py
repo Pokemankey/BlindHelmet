@@ -1,18 +1,16 @@
-from ultralytics import YOLO
 #Module Imports
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
 from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.Config.config import CocoModelPath,DetectionConfidence
 
-def HumanDetection():
-    model = YOLO(CocoModelPath)
+def HumanDetection(detectionModel):
     engine = getVoiceBox()
-    names = model.names
+    names = detectionModel.names
 
     cap = getCamera()
     ret, frame = cap.read()
     cap.release()
-    results = model.predict(frame, save=False, conf=DetectionConfidence, classes = [0])
+    results = detectionModel.predict(frame, save=False, conf=DetectionConfidence, classes = [0])
 
     for r in results:
         obj = {}
