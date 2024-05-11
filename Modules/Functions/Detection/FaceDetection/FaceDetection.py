@@ -10,39 +10,36 @@ from scipy.spatial.distance import cosine
 from Modules.Setup.Config.config import faceRecognitionPath,faceDatabasePath
 from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.Microphone.Mic import getUserInput
 
-def saveFace(recognizer,stream):
+def saveFace():
     engine = getVoiceBox()
-    engine.say("What Is The Name Of This Person")
-    engine.runAndWait()
     cap = getCamera()
     try:
         ret, frame = cap.read()
         cap.release()
-        name = ""
-        while True:
-            data = stream.read(2000)
-            if recognizer.AcceptWaveform(data):
-                result = recognizer.Result()
-                resultMap = json.loads(result.lower())
-                print(resultMap['text'])
-                name = resultMap['text']
-                break
-
         haar_cascade = cv2.CascadeClassifier(faceRecognitionPath)
         gray_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = haar_cascade.detectMultiScale(
             gray_img, scaleFactor=1.05, minNeighbors=1, minSize=(100, 100)
         )
-
+        engine.say("What Is The Name Of This Person")
+        engine.runAndWait()
+        name = getUserInput()
+        isSaved = False
         for x, y, w, h in faces:
             cropped_image = gray_img[y:y + h, x:x + w]
             cropped_image = cv2.resize(cropped_image, (150, 150))
-            target_file_name = 'Modules\\Functions\\Detection\\FaceDetection\\FaceDatabase\\' + name + '.jpg'
+            target_file_name = 'Modules/Functions/Detection/FaceDetection/FaceDatabase/' + name + '.jpg'
             cv2.imwrite(target_file_name, cropped_image)
-
-        engine.say(f"Saved Face Of {name}")
-        engine.runAndWait()
+            print(name)
+            engine.say(f"Saved Face Of {name}")
+            engine.runAndWait()
+            isSaved = True
+            break
+        if not isSaved:
+            engine.say(f"Could not find any person infront of the camera")
+            engine.runAndWait()
     except Exception as e:
         engine.say(f"Error Saving Image")
         engine.runAndWait()
@@ -65,7 +62,7 @@ def compare_embeddings(embedding1, embedding2):
     embedding1 = np.array(embedding1).flatten()
     embedding2 = np.array(embedding2).flatten()
     similarity_score = 1 - cosine(embedding1, embedding2)
-    threshold = 0.9
+    threshold = 0.7
     return similarity_score >= threshold
 
 def saveTempFace(cap):
@@ -76,10 +73,9 @@ def saveTempFace(cap):
         faces = haar_cascade.detectMultiScale(
             gray_img, scaleFactor=1.05, minNeighbors=1, minSize=(100, 100)
         )
-
         for x, y, w, h in faces:
             cropped_image = frame[y:y + h, x:x + w]
-            target_file_name = 'Modules\\Functions\\Detection\\FaceDetection\\Face\\' + 'temp' + '.jpg'
+            target_file_name = 'Modules/Functions/Detection/FaceDetection/Face/' + 'temp' + '.jpg'
             cv2.imwrite(target_file_name, cropped_image)
     except Exception as e:
         print("Error saving temp face")
@@ -90,18 +86,22 @@ def detectFace(known_faces):
     try:
         saveTempFace(cap)
         # Compare the embeddings of the detected face with precomputed embeddings
-        for file in os.listdir('Modules\\Functions\\Detection\\FaceDetection\\Face'):
-            embedding = get_embedding(os.path.join('Modules\\Functions\\Detection\\FaceDetection\\Face', file))
+        for file in os.listdir('Modules/Functions/Detection/FaceDetection/Face'):
+            embedding = get_embedding(os.path.join('Modules/Functions/Detection/FaceDetection/Face', file))
+            isFound = False
             for known_name, known_embedding in known_faces.items():
                 if compare_embeddings(embedding, known_embedding):
                     print(f"Detected {known_name}")
                     engine.say(f"Detected {known_name}")
                     engine.runAndWait()
-        temp_file_path = 'Modules\\Functions\\Detection\\FaceDetection\\Face\\temp.jpg'
+                    isFound = True
+        temp_file_path = 'Modules/Functions/Detection/FaceDetection/Face/temp.jpg'
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
         cap.release()
-        
+        if not isFound:
+            engine.say(f"COuld Not Find Anyone")
+            engine.runAndWait()
     except Exception as e:
         print(e)
         engine.say("Error Recognizing Face")

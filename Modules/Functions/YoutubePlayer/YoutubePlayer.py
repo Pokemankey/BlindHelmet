@@ -13,7 +13,7 @@ from API_KEYS import YOUTUBE_API_KEY
 from Modules.Setup.Config.config import AiName
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
 from Modules.Setup.Config.Commands import ValidCommand,evaluateInput
-
+from Modules.Setup.Microphone.Mic import getUserInput
 
 paused = False
 stop_requested = False
@@ -100,21 +100,15 @@ def toggle_stop():
     global stop_requested
     stop_requested = True
 
-def YoutubePlayer(recognizer, stream,db):
+def YoutubePlayer(db):
     try:
         # Example search query
         query = ""
         engine = getVoiceBox()
         engine.say("What do you want to play?")
         engine.runAndWait()
-
-        while True:
-            data = stream.read(2000,exception_on_overflow=False)
-            if recognizer.AcceptWaveform(data):
-                result = recognizer.Result()
-                resultMap = json.loads(result.lower())
-                print(resultMap['text'])
-                break
+            
+        query = getUserInput()
 
         # Search for videos
         videos = search_videos(query, YOUTUBE_API_KEY)
@@ -134,20 +128,16 @@ def YoutubePlayer(recognizer, stream,db):
 
             # Loop to listen for user input
             while True:
-                data = stream.read(2000,exception_on_overflow=False)
-                if recognizer.AcceptWaveform(data):
-                    result = recognizer.Result()
-                    resultMap = json.loads(result.lower())
-                    print(resultMap['text'])
-                    if ValidCommand(resultMap["text"]):
-                        output = evaluateInput(resultMap["text"], db)
-                        if output == 'Pause':
-                            toggle_pause()
-                        elif output == 'Resume':
-                            toggle_pause()
-                        elif output == "Exit":
-                            toggle_stop()
-                            break
+                inp = getUserInput()
+                if ValidCommand(inp):
+                    output = evaluateInput(inp, db)
+                    if output == 'Pause':
+                        toggle_pause()
+                    elif output == 'Resume':
+                        toggle_pause()
+                    elif output == "Exit":
+                        toggle_stop()
+                        break
 
             # Wait for the audio thread to finish
             engine.say("Exiting YouTube player")

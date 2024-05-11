@@ -1,6 +1,6 @@
+setuptools
 https://pytorch.org/
 pyttsx3
-vosk
 pyaudio
 ultralytics
 opencv-python
@@ -10,6 +10,15 @@ pydub
 https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz
 langchain
 sentence_transformers
-lanchain_chroma
+lanchain-chroma
 google.generativeai
 imgbeddings
+SpeechRecognition
+# sudo apt install python3-dev build-essential
+# sudo apt install portaudio19-dev
+
+#pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+#setuptools pyttsx3 pyaudio ultralytics opencv-python pytesseract google-api-python-client pydub https://github.com/yt-dlp/yt-dlp/archive/master.tar.gz langchain sentence_transformers google.generativeai imgbeddings SpeechRecognition 
+#langchain-chroma
+# sudo apt-get install libespeak1
+#python-doctr

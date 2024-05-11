@@ -1,6 +1,5 @@
 # Path
-SpeechRecognitionModelPath = "/home/poke/BlindHelmet/Modules/Setup/Utility/Speech Recognition Model"
-TesseractPath = "/bin/tesseract"
+TesseractPath = "/usr/bin/tesseract"
 CocoModelPath = r"detection.pt"
 faceRecognitionPath = r'Modules/Setup/Utility/haarcascade_frontalface_default.xml'
 faceDatabasePath = r'Modules/Functions/Detection/FaceDetection/FaceDatabase'
@@ -13,7 +12,7 @@ DetectionConfidence = 0.7
 CameraIndex = 0
 
 # Microphone Settings
-MicrophoneIndex = 1
+MicrophoneIndex = 4
 
 # User Location
 UserLocation = "Dubai,UAE"
@@ -25,7 +24,6 @@ allCommands = "..."
 
 # Enumerate available audio devices
 import pyaudio
-import cv2
 p = pyaudio.PyAudio()
 print("Available audio devices:")
 for i in range(p.get_device_count()):

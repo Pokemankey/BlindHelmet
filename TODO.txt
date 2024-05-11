@@ -1,3 +1,0 @@
-Check on youtube player
-Fix facial recoginiton
-Make local llama thing

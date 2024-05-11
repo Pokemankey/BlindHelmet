@@ -1,13 +1,11 @@
-from vosk import Model, KaldiRecognizer
-import pyaudio
-import json
 import google.generativeai as genai
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from ultralytics import YOLO
+from doctr.models import ocr_predictor
 
 #Module Imports
-from Modules.Setup.Config.config import SpeechRecognitionModelPath,MicrophoneIndex,CocoModelPath,AiName
+from Modules.Setup.Config.config import CocoModelPath,AiName
 from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
 
@@ -23,19 +21,20 @@ from Modules.Functions.Weather.FetchWeather import get_weather_forecast
 from Modules.Functions.DateAndTime.fetchDateAndTime import get_current_datetime
 from Modules.Functions.Help.Help import getHelp
 
+import speech_recognition as sr
 
-def FindCommand(text,db,recognizer,stream,detectionModel):
+def FindCommand(text,db,detectionModel,OCRmodel):
     global known_faces
     output = evaluateInput(text,db)
     print(f"Running {output}")
     if output == "OCR":
-        OCR_Setup()
+        OCR_Setup(OCRmodel)
     elif output == "ObjectDetection":
         ObjectDetection(detectionModel)
     elif output == "HumanDetection":
         HumanDetection(detectionModel)
     elif output == "Youtube":
-        YoutubePlayer(recognizer,stream,db)
+        YoutubePlayer(db)
     elif output == "WeatherLookup":
         get_weather_forecast()
     elif output == "Date":
@@ -43,26 +42,21 @@ def FindCommand(text,db,recognizer,stream,detectionModel):
     elif output == "Help":
         getHelp()
     elif output == "SaveFace":
-        saveFace(recognizer,stream)
+        saveFace()
         known_faces = precompute_embeddings()
-    elif output == "DetectFace":
+    elif output == "FacialRecognition":
         detectFace(known_faces)
 
-def FindGeminiCommand(text,db,recognizer,stream):
+def FindGeminiCommand(text,db):
     output = evaluateInput(text,db)
-    # print(f"Running {output}")
     if output == "Gemini":
-        askGeminiQuestion(recognizer,stream)
+        askGeminiQuestion()
 
 def Jarvis():
     global known_faces
 
     #microphone setup
-    model = Model(SpeechRecognitionModelPath)
-    recognizer = KaldiRecognizer(model, 48000)
-    p = pyaudio.PyAudio()
-    stream = p.open(format=pyaudio.paInt16, channels=1, rate=48000, input=True, frames_per_buffer=2000,
-                    input_device_index=MicrophoneIndex)
+    recognizer = sr.Recognizer()
     #Embeddings setup
     embeddings = HuggingFaceEmbeddings(model_name="all-mpnet-base-v2")
     db = Chroma(
@@ -81,15 +75,25 @@ def Jarvis():
     engine.say(f"{AiName} online")
     engine.runAndWait()
 
+    #OCR Model
+    OCRmodel = ocr_predictor(pretrained=True)
+
+
     while True:
-        data = stream.read(2000,exception_on_overflow=False)
-        if recognizer.AcceptWaveform(data):
-            result = recognizer.Result()
-            resultMap = json.loads(result.lower())
-            print(resultMap["text"])
-            if ValidCommand(resultMap["text"]):
-                command = resultMap["text"].replace("zero ", "")
-                FindCommand(command,db,recognizer,stream,detectionModel)
-            elif ValidGeminiCommand(resultMap["text"]):
-                command = resultMap["text"]
-                FindGeminiCommand(command,db,recognizer,stream)
+        with sr.Microphone() as source:
+            try:
+                audio = recognizer.listen(source)
+                text = recognizer.recognize_google(audio)
+                if text:
+                    print(text)
+                    if ValidCommand(text):
+                        command = text.replace("zero ", "")
+                        FindCommand(command,db,detectionModel,OCRmodel)
+                    elif ValidGeminiCommand(text):
+                        command = text
+                        FindGeminiCommand(command,db)
+            except sr.UnknownValueError:
+                print("Could not understand audio")
+            except sr.RequestError as e:
+                print("Could not request results; {0}".format(e))
+
