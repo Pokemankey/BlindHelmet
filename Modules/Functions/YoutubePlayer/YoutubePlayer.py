@@ -11,7 +11,7 @@ import wave
 from API_KEYS import YOUTUBE_API_KEY
 
 from Modules.Setup.Config.config import AiName
-from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.VoiceBox.VoiceBoxSetup import speak
 from Modules.Setup.Config.Commands import ValidCommand,evaluateInput
 from Modules.Setup.Microphone.Mic import getUserInput
 
@@ -104,9 +104,9 @@ def YoutubePlayer(db):
     try:
         # Example search query
         query = ""
-        engine = getVoiceBox()
-        engine.say("What do you want to play?")
-        engine.runAndWait()
+        
+        speak("What do you want to play?")
+        
             
         query = getUserInput()
 
@@ -116,11 +116,11 @@ def YoutubePlayer(db):
         if len(videos) > 0:
             top_video = videos[0]
             title = top_video["title"]
-            engine.say(f"Downloading audio of top search result: {title}")
-            engine.runAndWait()
+            speak(f"Downloading audio of top search result: {title}")
+            
             audio_file = download_audio(top_video["video_id"])
-            engine.say("Playing audio...")
-            engine.runAndWait()
+            speak("Playing audio...")
+            
 
             # Start the audio playback in a separate thread
             audio_thread = threading.Thread(target=play_audio, args=(audio_file,))
@@ -140,8 +140,8 @@ def YoutubePlayer(db):
                         break
 
             # Wait for the audio thread to finish
-            engine.say("Exiting YouTube player")
-            engine.runAndWait()
+            speak("Exiting YouTube player")
+            
             global paused
             paused = False
             global stop_requested
@@ -149,10 +149,10 @@ def YoutubePlayer(db):
             audio_thread.join()
 
         else:
-            engine.say("No videos found for the search query.")
-            engine.runAndWait()
+            speak("No videos found for the search query.")
+            
 
     except Exception as e:
-        engine.say("Failed to retrieve song data. Check your wifi connection")
+        speak("Failed to retrieve song data. Check your wifi connection")
         print(e)
-        engine.runAndWait()
+        

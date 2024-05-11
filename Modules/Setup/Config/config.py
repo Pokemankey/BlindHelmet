@@ -18,8 +18,7 @@ MicrophoneIndex = 4
 UserLocation = "Dubai,UAE"
 
 # All Commands
-# allCommands = "Ask Gemini A Question , OCR / Text Detection , Human Detection , Object Detection , Get weather information , Play youtube video / music and resume pause and stop the videos and lastly Get current date and time"
-allCommands = "..."
+allCommands = "Ask Gemini A Question , OCR / Text Detection , Human Detection , Object Detection , Get weather information , Play youtube video / music and resume pause and stop the videos and lastly Get current date and time"
 
 
 # Enumerate available audio devices

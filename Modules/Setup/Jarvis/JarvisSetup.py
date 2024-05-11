@@ -7,7 +7,7 @@ from doctr.models import ocr_predictor
 #Module Imports
 from Modules.Setup.Config.config import CocoModelPath,AiName
 from Modules.Setup.Camera.CameraSetup import getCamera
-from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.VoiceBox.VoiceBoxSetup import speak
 
 from Modules.Setup.Config.Commands import evaluateInput,ValidCommand,ValidGeminiCommand
 
@@ -71,9 +71,7 @@ def Jarvis():
     detectionModel = YOLO(CocoModelPath)
 
     #Voice Module Setup
-    engine = getVoiceBox()
-    engine.say(f"{AiName} online")
-    engine.runAndWait()
+    speak(f"{AiName} online")
 
     #OCR Model
     OCRmodel = ocr_predictor(pretrained=True)
@@ -82,7 +80,7 @@ def Jarvis():
     while True:
         with sr.Microphone() as source:
             try:
-                audio = recognizer.listen(source)
+                audio = recognizer.listen(source,phrase_time_limit=3)
                 text = recognizer.recognize_google(audio)
                 if text:
                     print(text)
@@ -93,7 +91,7 @@ def Jarvis():
                         command = text
                         FindGeminiCommand(command,db)
             except sr.UnknownValueError:
-                print("Could not understand audio")
+                print("Listening")
             except sr.RequestError as e:
                 print("Could not request results; {0}".format(e))
 

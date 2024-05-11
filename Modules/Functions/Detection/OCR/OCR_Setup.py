@@ -3,18 +3,17 @@ import cv2
 import os
 
 # Module Imports
-from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.VoiceBox.VoiceBoxSetup import speak
 from Modules.Setup.Camera.CameraSetup import getCamera
 
 def OCR_Setup(model):
     try:
-        engine = getVoiceBox()
 
         cap = getCamera()
         # Check if the camera is opened successfully
         if not cap.isOpened():
-            engine.say("Error Failed to open camera.")
-            engine.runAndWait()
+            speak("Error Failed to open camera.")
+            
             return
 
         ret, frame = cap.read()
@@ -22,8 +21,8 @@ def OCR_Setup(model):
         
         # Check if the frame is valid
         if not ret or frame is None:
-            engine.say("Error Failed to capture frame from the camera.")
-            engine.runAndWait()
+            speak("Error Failed to capture frame from the camera.")
+            
             return
 
         # Save the frame as a temporary image file
@@ -44,13 +43,16 @@ def OCR_Setup(model):
 
         # Speak the detected sentence
         print(sentence)
-        engine.say(sentence)
-        engine.runAndWait()
+        speak(sentence)
+        
 
         # Delete the temporary image file
         os.remove(temp_image_path)
     except Exception as e:
         print("Error:", e)
+        speak("Error "+e)
+
+
 
 
 

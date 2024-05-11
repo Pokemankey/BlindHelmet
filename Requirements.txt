@@ -22,3 +22,6 @@ SpeechRecognition
 #langchain-chroma
 # sudo apt-get install libespeak1
 #python-doctr
+#sudo apt-get install mpg321
+#pip install gtts wheel
+#pip install playsound

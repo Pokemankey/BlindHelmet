@@ -1,10 +1,9 @@
 #Module Imports
-from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.VoiceBox.VoiceBoxSetup import speak
 from Modules.Setup.Camera.CameraSetup import getCamera
 from Modules.Setup.Config.config import CocoModelPath,DetectionConfidence
 
 def HumanDetection(detectionModel):
-    engine = getVoiceBox()
     names = detectionModel.names
 
     cap = getCamera()
@@ -21,7 +20,4 @@ def HumanDetection(detectionModel):
             else:
                 obj[names[int(c)]] += 1
         for x in obj:
-            engine.say(f"{obj[x]} {x}")
-            engine.runAndWait()
-
-    engine.stop()
+            speak(f"{obj[x]} {x}")

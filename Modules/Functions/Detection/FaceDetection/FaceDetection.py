@@ -9,11 +9,10 @@ from scipy.spatial.distance import cosine
 # Module Imports
 from Modules.Setup.Config.config import faceRecognitionPath,faceDatabasePath
 from Modules.Setup.Camera.CameraSetup import getCamera
-from Modules.Setup.VoiceBox.VoiceBoxSetup import getVoiceBox
+from Modules.Setup.VoiceBox.VoiceBoxSetup import speak
 from Modules.Setup.Microphone.Mic import getUserInput
 
 def saveFace():
-    engine = getVoiceBox()
     cap = getCamera()
     try:
         ret, frame = cap.read()
@@ -23,8 +22,8 @@ def saveFace():
         faces = haar_cascade.detectMultiScale(
             gray_img, scaleFactor=1.05, minNeighbors=1, minSize=(100, 100)
         )
-        engine.say("What Is The Name Of This Person")
-        engine.runAndWait()
+        speak("What Is The Name Of This Person")
+        
         name = getUserInput()
         isSaved = False
         for x, y, w, h in faces:
@@ -33,16 +32,16 @@ def saveFace():
             target_file_name = 'Modules/Functions/Detection/FaceDetection/FaceDatabase/' + name + '.jpg'
             cv2.imwrite(target_file_name, cropped_image)
             print(name)
-            engine.say(f"Saved Face Of {name}")
-            engine.runAndWait()
+            speak(f"Saved Face Of {name}")
+            
             isSaved = True
             break
         if not isSaved:
-            engine.say(f"Could not find any person infront of the camera")
-            engine.runAndWait()
+            speak(f"Could not find any person infront of the camera")
+            
     except Exception as e:
-        engine.say(f"Error Saving Image")
-        engine.runAndWait()
+        speak(f"Error Saving Image")
+        
 
 def precompute_embeddings():
     embeddings_dict = {}
@@ -81,7 +80,6 @@ def saveTempFace(cap):
         print("Error saving temp face")
 
 def detectFace(known_faces):
-    engine = getVoiceBox()
     cap = getCamera()
     try:
         saveTempFace(cap)
@@ -92,17 +90,17 @@ def detectFace(known_faces):
             for known_name, known_embedding in known_faces.items():
                 if compare_embeddings(embedding, known_embedding):
                     print(f"Detected {known_name}")
-                    engine.say(f"Detected {known_name}")
-                    engine.runAndWait()
+                    speak(f"Detected {known_name}")
+                    
                     isFound = True
         temp_file_path = 'Modules/Functions/Detection/FaceDetection/Face/temp.jpg'
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
         cap.release()
         if not isFound:
-            engine.say(f"COuld Not Find Anyone")
-            engine.runAndWait()
+            speak(f"COuld Not Find Anyone")
+            
     except Exception as e:
         print(e)
-        engine.say("Error Recognizing Face")
-        engine.runAndWait()
+        speak("Error Recognizing Face")
+        
